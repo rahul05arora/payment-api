@@ -1,0 +1,29 @@
+name: Moneris Frontend CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install App Dependencies
+        run: npm ci
+
+      - name: Validate TypeScript Types
+        run: npx tsc --noEmit
+
+      - name: Run Jest Unit Tests
+        run: npm test
